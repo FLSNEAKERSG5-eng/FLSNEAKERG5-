@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLSneakers.G5 | Tu Tienda Premium de Zapatillas G5</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Space+Grotesk:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        fl: {
+                            dark: '#08090C',
+                            card: '#10121A',
+                            border: '#1F2433',
+                            blue: '#00F0FF',  // Cían / Azul Eléctrico
+                            neon: '#CCFF00',  // Verde Neón
+                            red: '#FF2A55',   // Rojo Urbano Accent
+                            muted: '#8B949E',
+                            text: '#F0F6FC'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #08090C;
+            color: #F0F6FC;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .neon-glow-blue {
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        }
+
+        .box-glow-blue {
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #08090C;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1F2433;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00F0FF;
+        }
+    </style>
+</head>
+<body class="antialiased flex flex-col min-h-screen">
+
+    <!-- 1. HEADER & NAVEGACIÓN -->
+    <header class="sticky top-0 z-40 bg-fl-dark/90 backdrop-blur-md border-b border-fl-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo FLSneakers.G5 -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-11 h-11 bg-gradient-to-tr from-fl-blue to-fl-neon text-black font-extrabold flex items-center justify-center rounded-xl text-xl tracking-tighter shadow-lg transform group-hover:scale-105 transition-transform font-display">
+                    FL
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-display text-xl sm:text-2xl font-black tracking-wider text-white leading-none">
+                        FLSNEAKERS<span class="text-fl-blue">.G5</span>
+                    </span>
+                    <span class="text-[10px] text-fl-muted font-bold tracking-widest uppercase">G5 Quality Streetwear</span>
+                </div>
+            </a>
+
+            <!-- Menú Central (Desktop) -->
+            <nav class="hidden md:flex items-center space-x-8 font-semibold text-sm tracking-wide">
+                <a href="#catalogo" class="text-fl-text hover:text-fl-blue transition-colors">Catálogo</a>
+                <a href="#ventajas" class="text-fl-text hover:text-fl-blue transition-colors">Calidad G5</a>
+                <a href="#guia-tallas" class="text-fl-text hover:text-fl-blue transition-colors">Guía Tallas</a>
+            </nav>
+
+            <!-- Acciones Derecha: Admin & Carrito -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                
+                <!-- Botón Admin Modal -->
+                <button onclick="openAdminModal()" class="px-3.5 py-2 rounded-xl bg-fl-card border border-fl-border hover:border-fl-blue text-xs font-bold text-white transition-all flex items-center gap-2 group">
+                    <i class="fa-solid fa-sliders text-fl-blue group-hover:rotate-90 transition-transform"></i>
+                    <span class="hidden sm:inline">Panel Admin</span>
+                </button>
+
+                <!-- Botón Carrito -->
+                <button onclick="toggleCart()" class="relative p-2.5 rounded-xl bg-fl-card border border-fl-border hover:border-fl-blue transition-all group">
+                    <i class="fa-solid fa-bag-shopping text-lg text-white group-hover:text-fl-blue transition-colors"></i>
+                    <span id="cart-count" class="absolute -top-1.5 -right-1.5 bg-fl-blue text-black text-xs font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-fl-dark">
+                        0
+                    </span>
+                </button>
+
+                <!-- Hamburguesa Mobile -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-white hover:text-fl-blue focus:outline-none">
+                    <i class="fa-solid fa-bars-staggered text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-fl-card border-b border-fl-border px-4 py-4 space-y-3 font-medium">
+            <a href="#catalogo" onclick="toggleMobileMenu()" class="block py-2 text-fl-text hover:text-fl-blue">Ver Catálogo</a>
+            <a href="#ventajas" onclick="toggleMobileMenu()" class="block py-2 text-fl-text hover:text-fl-blue">¿Qué es G5?</a>
+            <a href="#guia-tallas" onclick="toggleMobileMenu()" class="block py-2 text-fl-text hover:text-fl-blue">Guía de Tallas</a>
+            <button onclick="toggleMobileMenu(); openAdminModal();" class="w-full text-left py-2 text-fl-blue font-bold flex items-center gap-2">
+                <i class="fa-solid fa-gear"></i> Administrar Productos y Configuración
+            </button>
+        </div>
+    </header>
+
+    <!-- 2. HERO SECTION -->
+    <section class="relative py-16 sm:py-24 border-b border-fl-border overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-fl-blue/10 via-transparent to-transparent pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-fl-card border border-fl-blue/30 text-fl-blue text-xs font-bold tracking-wider uppercase">
+                    <i class="fa-solid fa-fire text-fl-red"></i> <span id="hero-store-tag">FLSneakers.G5 Official Store</span>
+                </div>
+
+                <h1 class="font-display text-4xl sm:text-6xl font-black text-white tracking-tight leading-none">
+                    TUS PAR FAVORITOS <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-fl-blue via-white to-fl-neon neon-glow-blue">
+                        CALIDAD G5 PERFECTA
+                    </span>
+                </h1>
+
+                <p class="text-fl-muted text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                    Catálogo exclusivo con materiales 1:1, suela, peso y acabados idénticos a los pares originales. Configura tus productos, edita fotos y vende directo a tu WhatsApp.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
+                    <a href="#catalogo" class="px-8 py-4 bg-fl-blue text-black font-extrabold rounded-xl shadow-lg hover:bg-white hover:shadow-fl-blue/50 transition-all flex items-center justify-center gap-3">
+                        <span>EXPLORAR CATÁLOGO</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <button onclick="openAdminModal()" class="px-8 py-4 bg-fl-card border border-fl-border hover:border-fl-blue text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-pen-to-square text-fl-blue"></i>
+                        <span>Personalizar Mi Tienda</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-5 relative">
+                <div class="relative rounded-2xl bg-fl-card border border-fl-border p-3 overflow-hidden box-glow-blue">
+                    <img id="hero-feature-img" src="https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=800&q=80" alt="Sneaker G5" class="w-full h-80 sm:h-96 object-cover rounded-xl">
+                    <div class="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-fl-dark/90 border border-fl-border backdrop-blur-md flex justify-between items-center">
+                        <div>
+                            <span class="text-[10px] text-fl-blue font-extrabold uppercase tracking-widest">Destacado</span>
+                            <p class="text-white font-bold font-display text-sm sm:text-base">G5 Quality Collection</p>
+                        </div>
+                        <span class="bg-fl-neon text-black font-black px-3 py-1 rounded-lg text-xs">100% Garantizado</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 3. CATÁLOGO PRINCIPAL Y FILTROS -->
+    <section id="catalogo" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1">
+        
+        <!-- Header Filtros & Búsqueda -->
+        <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6 mb-10">
+            <div>
+                <h2 class="font-display text-3xl font-extrabold text-white">CATÁLOGO DE <span class="text-fl-blue">ZAPATILLAS</span></h2>
+                <p class="text-fl-muted text-sm mt-1">Explora nuestros modelos disponibles. Selecciona tu talla e inicia tu pedido.</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3">
+                <!-- Buscador -->
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-fl-muted text-xs"></i>
+                    <input type="text" id="search-input" oninput="filterProducts()" placeholder="Buscar zapatilla..." class="pl-9 pr-4 py-2.5 bg-fl-card border border-fl-border rounded-xl text-sm text-white focus:outline-none focus:border-fl-blue w-full sm:w-60">
+                </div>
+
+                <!-- Categorías -->
+                <select id="category-filter" onchange="filterProducts()" class="px-4 py-2.5 bg-fl-card border border-fl-border rounded-xl text-sm text-white focus:outline-none focus:border-fl-blue font-semibold">
+                    <option value="all">Todas las Marcas</option>
+                    <option value="Jordan">Jordan</option>
+                    <option value="Nike">Nike</option>
+                    <option value="Adidas">Adidas</option>
+                    <option value="Yeezy">Yeezy</option>
+                    <option value="Otros">Otras Marcas</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Banner Ayuda para Administrador -->
+        <div class="bg-fl-card border border-fl-blue/30 p-4 rounded-xl mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-fl-blue/10 text-fl-blue flex items-center justify-center font-bold text-sm shrink-0">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+                <p class="text-fl-muted">
+                    <strong class="text-white">Panel FLSneakers.G5:</strong> Agrega tus zapatillas con tus propias fotos locales o URLs, asigna precios, tallas y configura tu número de WhatsApp.
+                </p>
+            </div>
+            <button onclick="openAdminModal()" class="px-4 py-2 bg-fl-blue text-black font-bold rounded-lg hover:bg-white transition-all shrink-0">
+                + Agregar Producto
+            </button>
+        </div>
+
+        <!-- Grilla de Productos -->
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Renderizado Dinámico vía JS -->
+        </div>
+
+    </section>
+
+    <!-- 4. MODAL DETALLE DE PRODUCTO (PARA ELEGIR TALLA) -->
+    <div id="product-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-fl-card border border-fl-border rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-fl-muted hover:text-white z-10 w-8 h-8 rounded-full bg-fl-dark flex items-center justify-center">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="relative h-64 bg-black/50">
+                <img id="modal-img" src="" alt="Sneaker" class="w-full h-full object-cover">
+                <span class="absolute bottom-3 left-3 bg-fl-blue text-black text-[11px] font-extrabold px-3 py-1 rounded-lg">G5 Quality 1:1</span>
+            </div>
+
+            <div class="p-6 space-y-4">
+                <div>
+                    <span id="modal-brand" class="text-xs font-bold text-fl-muted uppercase">Marca</span>
+                    <h3 id="modal-title" class="font-display font-extrabold text-xl text-white mt-0.5">Nombre Zapatilla</h3>
+                    <p id="modal-price" class="text-2xl font-black text-fl-blue mt-1">$0</p>
+                </div>
+
+                <p id="modal-description" class="text-xs text-fl-muted leading-relaxed">
+                    Zapatilla confeccionada con materiales idénticos al par original. Confort supremo y máxima durabilidad.
+                </p>
+
+                <!-- Selector de Talla -->
+                <div>
+                    <label class="block text-xs font-bold text-white mb-2">Selecciona tu Talla:</label>
+                    <div id="modal-sizes-container" class="flex flex-wrap gap-2">
+                        <!-- Botones de Talla Dinámicos -->
+                    </div>
+                </div>
+
+                <button id="modal-add-btn" onclick="confirmAddToCart()" class="w-full py-3.5 bg-fl-blue text-black font-extrabold rounded-xl hover:bg-white transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cart-plus"></i>
+                    <span>AÑADIR AL CARRITO</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. PANEL DE ADMINISTRACIÓN / CONFIGURACIÓN (MODAL) -->
+    <div id="admin-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-fl-card border border-fl-border rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+            
+            <!-- Header Admin -->
+            <div class="p-5 border-b border-fl-border flex items-center justify-between bg-fl-dark">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-fl-blue text-black flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-lg text-white">Panel de Administración FLSneakers.G5</h3>
+                        <p class="text-xs text-fl-muted">Personaliza tus productos, precios y datos de contacto</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminModal()" class="text-fl-muted hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-8 flex-1">
+                
+                <!-- Sección A: Configuración de la Tienda -->
+                <div class="bg-fl-dark p-4 rounded-xl border border-fl-border space-y-4">
+                    <h4 class="font-display font-bold text-sm text-fl-blue uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-gear"></i> Configuración General
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-white mb-1">Número de WhatsApp (con código de país)</label>
+                            <input type="text" id="cfg-whatsapp" placeholder="Ej: 56912345678" class="w-full px-3 py-2 bg-fl-card border border-fl-border rounded-lg text-xs text-white focus:outline-none focus:border-fl-blue">
+                            <span class="text-[10px] text-fl-muted">Sin el signo + (Ejemplo Chile: 56912345678)</span>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-white mb-1">Nombre Corto de la Tienda</label>
+                            <input type="text" id="cfg-store-name" placeholder="FLSneakers.G5" class="w-full px-3 py-2 bg-fl-card border border-fl-border rounded-lg text-xs text-white focus:outline-none focus:border-fl-blue">
+                        </div>
+                    </div>
+
+                    <button onclick="saveStoreConfig()" class="px-4 py-2 bg-fl-border hover:bg-fl-blue hover:text-black font-bold text-xs rounded-lg transition-all text-white">
+                        Guardar Configuración General
+                    </button>
+                </div>
+
+                <!-- Sección B: Formulario Agregar/Editar Producto -->
+                <div class="bg-fl-dark p-4 rounded-xl border border-fl-border space-y-4">
+                    <h4 id="form-product-title" class="font-display font-bold text-sm text-fl-neon uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-plus-circle"></i> Agregar Nuevo Producto
+                    </h4>
+
+                    <input type="hidden" id="prod-edit-id" value="">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-white mb-1">Nombre del Modelo</label>
+                            <input type="text" id="prod-name" placeholder="Ej: Air Jordan 1 High Travis Scott" class="w-full px-3 py-2 bg-fl-card border border-fl-border rounded-lg text-xs text-white focus:outline-none focus:border-fl-blue">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-white mb-1">Marca / Categoría</label>
+                            <select id="prod-brand" class="w-full px-3 py-2 bg-fl-card border border-fl-border rounded-lg text-xs text-white focus:outline-none focus:border-fl-blue">
+                                <option value="Jordan">Jordan</option>
+                                <option value="Nike">Nike</option>
+                                <option value="Adidas">Adidas</option>
+                                <option value="Yeezy">Yeezy</option>
+                                <option value="Otros">Otros</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-white mb-1">Precio ($)</label>
+                            <input type="number" id="prod-price" placeholder="Ej: 129900" class="w-full px-3 py-2 bg-fl-card border border-fl-border rounded-lg text-xs text-white focus:outline-none focus:border-fl-blue">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-white mb-1">Tallas Disponibles (separadas por coma)</label>
+                            <input type="text" id="prod-sizes" placeholder="Ej: 8 US, 8.5 US, 9 US, 10 US" class="w-full px-3 py-2 bg-fl-card border border-fl-border rounded-lg text-xs text-white focus:outline-none focus:border-fl-blue">
+                        </div>
+                    </div>
+
+                    <!-- Carga de Imagen: URL o Archivo -->
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-white">Foto del Producto</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="prod-img-url" placeholder="Opción A: Pegar URL de imagen..." class="w-full px-3 py-2 bg-fl-card border border-fl-border rounded-lg text-xs text-white focus:outline-none focus:border-fl-blue">
+                            
+                            <label class="cursor-pointer bg-fl-card border border-fl-border hover:border-fl-blue px-3 py-2 rounded-lg text-xs font-bold text-fl-muted hover:text-white flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-upload text-fl-blue"></i>
+                                <span>Opción B: Subir Foto Local</span>
+                                <input type="file" id="prod-file-input" accept="image/*" onchange="handleImageUpload(event)" class="hidden">
+                            </label>
+                        </div>
+                        <input type="hidden" id="prod-img-base64">
+                        <div id="img-preview-container" class="hidden flex items-center gap-3 pt-2">
+                            <img id="img-preview" src="" class="w-12 h-12 object-cover rounded-lg border border-fl-blue">
+                            <span class="text-[11px] text-fl-neon font-semibold">Vista previa cargada correctamente</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button onclick="saveProduct()" class="flex-1 py-3 bg-fl-blue text-black font-extrabold text-xs rounded-lg hover:bg-white transition-all">
+                            GUARDAR PRODUCTO
+                        </button>
+                        <button onclick="resetProductForm()" class="px-4 py-3 bg-fl-border text-white font-bold text-xs rounded-lg hover:bg-red-600 transition-all">
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sección C: Lista de Productos en Inventario -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-display font-bold text-sm text-white">Inventario Actual (<span id="admin-prod-count">0</span>)</h4>
+                        <button onclick="clearAllProducts()" class="text-[11px] text-fl-red hover:underline font-semibold">Vaciar Todo el Inventario</button>
+                    </div>
+
+                    <div id="admin-products-list" class="space-y-2">
+                        <!-- Lista JS -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. CARRITO LATERAL (DRAWER) -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+
+    <aside id="cart-sidebar" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-fl-dark border-l border-fl-border z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        
+        <div class="p-5 border-b border-fl-border flex items-center justify-between bg-fl-card">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-bag-shopping text-fl-blue text-xl"></i>
+                <h3 class="font-display font-bold text-lg text-white">Tu Carrito</h3>
+            </div>
+            <button onclick="toggleCart()" class="text-fl-muted hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+        </div>
+
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4">
+            <!-- Items de Carrito -->
+        </div>
+
+        <div class="p-5 border-t border-fl-border bg-fl-card space-y-4">
+            <!-- Método de Envío -->
+            <div class="space-y-1">
+                <label class="text-xs font-bold text-white">Método de Entrega / Envío:</label>
+                <select id="shipping-method" class="w-full px-3 py-2 bg-fl-dark border border-fl-border rounded-lg text-xs text-white focus:outline-none focus:border-fl-blue">
+                    <option value="Envío a Domicilio">Envío a Domicilio (Starken / Chilexpress / AGP)</option>
+                    <option value="Entrega Presencial / Metro">Entrega Presencial en Punto Aconvenir</option>
+                    <option value="Retiro en Sucursal">Retiro en Oficina / Tienda</option>
+                </select>
+            </div>
+
+            <div class="space-y-1.5 text-sm pt-2 border-t border-fl-border">
+                <div class="flex justify-between text-fl-muted text-xs">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal" class="font-bold text-white">$0</span>
+                </div>
+                <div class="flex justify-between text-base font-extrabold text-white">
+                    <span>Total:</span>
+                    <span id="cart-total" class="text-fl-blue font-display text-xl">$0</span>
+                </div>
+            </div>
+
+            <button onclick="sendWhatsAppOrder()" class="w-full py-4 bg-green-500 hover:bg-green-600 text-black font-extrabold rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg shadow-green-500/20">
+                <i class="fa-brands fa-whatsapp text-2xl"></i>
+                <span>ENVIAR PEDIDO POR WHATSAPP</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- TOAST NOTIFICACIÓN -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-fl-card border border-fl-blue text-white px-5 py-3.5 rounded-xl shadow-2xl z-50 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center gap-3">
+        <i class="fa-solid fa-circle-check text-fl-blue text-lg"></i>
+        <span id="toast-msg" class="text-xs font-bold">Mensaje de estado</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-fl-dark border-t border-fl-border py-10 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+            <div class="flex items-center justify-center gap-2">
+                <div class="w-8 h-8 bg-fl-blue text-black font-extrabold flex items-center justify-center rounded-lg text-base">FL</div>
+                <span class="font-display text-lg font-black text-white tracking-wider">FLSNEAKERS<span class="text-fl-blue">.G5</span></span>
+            </div>
+            <p class="text-xs text-fl-muted max-w-md mx-auto">La mejor calidad G5 de la escena urbana. Diseñado para ofrecer la máxima experiencia visual y de venta directa.</p>
+            <p class="text-[11px] text-fl-muted">&copy; 2026 FLSneakers.G5 - Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT -->
+    <script>
+        // ESTADO GLOBAL
+        let products = [];
+        let cart = [];
+        let config = {
+            whatsapp: "56912345678",
+            storeName: "FLSneakers.G5"
+        };
+        let activeModalProduct = null;
+        let selectedSizeForModal = "";
+
+        // CARGA DE LOCALSTORAGE
+        function loadInitData() {
+            const savedProducts = localStorage.getItem('fl_products');
+            if (savedProducts) {
+                products = JSON.parse(savedProducts);
+            } else {
+                products = [];
+                localStorage.setItem('fl_products', JSON.stringify(products));
+            }
+
+            const savedConfig = localStorage.getItem('fl_config');
+            if (savedConfig) {
+                config = JSON.parse(savedConfig);
+            }
+
+            document.getElementById('cfg-whatsapp').value = config.whatsapp;
+            document.getElementById('cfg-store-name').value = config.storeName;
+            document.getElementById('hero-store-tag').textContent = config.storeName + " Official Store";
+
+            renderProducts();
+            renderAdminProductsList();
+        }
+
+        // RENDERIZAR PRODUCTOS EN CATÁLOGO
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            const search = document.getElementById('search-input').value.toLowerCase();
+            const category = document.getElementById('category-filter').value;
+
+            grid.innerHTML = '';
+
+            const filtered = products.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(search) || p.brand.toLowerCase().includes(search);
+                const matchesCat = category === 'all' || p.brand.toLowerCase() === category.toLowerCase();
+                return matchesSearch && matchesCat;
+            });
+
+            if (products.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center text-fl-muted bg-fl-card/50 rounded-2xl border border-dashed border-fl-border p-8">
+                        <i class="fa-solid fa-box-open text-5xl mb-4 text-fl-blue/40"></i>
+                        <h3 class="font-display text-lg font-bold text-white">No hay productos en el catálogo aún</h3>
+                        <p class="text-xs text-fl-muted mt-1 max-w-md mx-auto">Accede al Panel de Administración para agregar tus primeras zapatillas con tus propias fotos y precios.</p>
+                        <button onclick="openAdminModal()" class="mt-5 px-6 py-2.5 bg-fl-blue text-black font-extrabold text-xs rounded-xl hover:bg-white transition-all inline-flex items-center gap-2">
+                            <i class="fa-solid fa-plus-circle"></i>
+                            <span>AGREGAR MI PRIMERA ZAPATILLA</span>
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-fl-muted">
+                        <i class="fa-solid fa-magnifying-glass text-4xl mb-3 opacity-30"></i>
+                        <p class="font-bold text-sm">No se encontraron modelos con esta búsqueda</p>
+                        <p class="text-xs mt-1">Intenta con otros términos o cambia la categoría.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'bg-fl-card rounded-2xl border border-fl-border overflow-hidden hover:border-fl-blue transition-all duration-300 flex flex-col group';
+
+                card.innerHTML = `
+                    <div class="relative h-60 bg-black/40 overflow-hidden cursor-pointer" onclick="openProductModal(${product.id})">
+                        <span class="absolute top-3 left-3 bg-fl-blue text-black text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider z-10">
+                            G5 Quality
+                        </span>
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    </div>
+
+                    <div class="p-5 flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                            <span class="text-[10px] font-bold text-fl-muted uppercase tracking-wider">${product.brand}</span>
+                            <h3 class="font-display font-bold text-white text-base line-clamp-2 mt-0.5">${product.name}</h3>
+                        </div>
+
+                        <div>
+                            <p class="font-display font-extrabold text-xl text-fl-blue">${formatPrice(product.price)}</p>
+                            <p class="text-[11px] text-fl-muted mt-1">Tallas: ${product.sizes ? product.sizes.join(', ') : 'Consultar'}</p>
+                        </div>
+
+                        <button onclick="openProductModal(${product.id})" class="w-full py-3 bg-fl-dark border border-fl-border hover:border-fl-blue hover:bg-fl-blue hover:text-black text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            <span>SELECCIONAR TALLA</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterProducts() {
+            renderProducts();
+        }
+
+        // MODAL DETALLE DE PRODUCTO
+        function openProductModal(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            activeModalProduct = product;
+            selectedSizeForModal = product.sizes && product.sizes.length > 0 ? product.sizes[0] : "Única";
+
+            document.getElementById('modal-img').src = product.image;
+            document.getElementById('modal-brand').textContent = product.brand;
+            document.getElementById('modal-title').textContent = product.name;
+            document.getElementById('modal-price').textContent = formatPrice(product.price);
+            document.getElementById('modal-description').textContent = product.description || "Zapatilla Calidad G5 confeccionada con detalles exactos de fábrica.";
+
+            const sizesContainer = document.getElementById('modal-sizes-container');
+            sizesContainer.innerHTML = '';
+
+            if (product.sizes && product.sizes.length > 0) {
+                product.sizes.forEach(size => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.onclick = () => selectSizeModal(size);
+                    btn.className = `size-btn text-xs px-3 py-2 rounded-xl border font-bold transition-all ${selectedSizeForModal === size ? 'bg-fl-blue text-black border-fl-blue' : 'bg-fl-dark text-white border-fl-border hover:border-fl-muted'}`;
+                    btn.textContent = size;
+                    btn.dataset.size = size;
+                    sizesContainer.appendChild(btn);
+                });
+            } else {
+                sizesContainer.innerHTML = `<span class="text-xs text-fl-muted">Talla estándar a consultar</span>`;
+            }
+
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function selectSizeModal(size) {
+            selectedSizeForModal = size;
+            const buttons = document.querySelectorAll('.size-btn');
+            buttons.forEach(btn => {
+                if (btn.dataset.size === size) {
+                    btn.className = "size-btn text-xs px-3 py-2 rounded-xl border font-bold transition-all bg-fl-blue text-black border-fl-blue";
+                } else {
+                    btn.className = "size-btn text-xs px-3 py-2 rounded-xl border font-bold transition-all bg-fl-dark text-white border-fl-border hover:border-fl-muted";
+                }
+            });
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        function confirmAddToCart() {
+            if (!activeModalProduct) return;
+
+            const existingIndex = cart.findIndex(item => item.id === activeModalProduct.id && item.size === selectedSizeForModal);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    ...activeModalProduct,
+                    size: selectedSizeForModal,
+                    quantity: 1
+                });
+            }
+
+            updateCartUI();
+            closeProductModal();
+            showToast(`Agregado: ${activeModalProduct.name} (${selectedSizeForModal})`);
+        }
+
+        // CARRITO DE COMPRAS
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            const isOpen = !sidebar.classList.contains('translate-x-full');
+
+            if (isOpen) {
+                sidebar.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            } else {
+                sidebar.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const cartCount = document.getElementById('cart-count');
+            const subtotalElem = document.getElementById('cart-subtotal');
+            const totalElem = document.getElementById('cart-total');
+
+            const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+            cartCount.textContent = totalItems;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center text-fl-muted py-12">
+                        <i class="fa-solid fa-cart-flatbed text-4xl mb-3 opacity-30"></i>
+                        <p class="font-bold text-sm">Tu carrito está vacío</p>
+                        <p class="text-xs mt-1">Selecciona un modelo del catálogo.</p>
+                    </div>
+                `;
+                subtotalElem.textContent = "$0";
+                totalElem.textContent = "$0";
+                return;
+            }
+
+            container.innerHTML = '';
+            let totalMoney = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                totalMoney += itemTotal;
+
+                const card = document.createElement('div');
+                card.className = 'bg-fl-dark p-3.5 rounded-xl border border-fl-border flex gap-3 items-center';
+                
+                card.innerHTML = `
+                    <img src="${item.image}" class="w-14 h-14 object-cover rounded-lg border border-fl-border">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-white truncate">${item.name}</h4>
+                        <p class="text-[11px] text-fl-blue font-semibold">Talla: ${item.size}</p>
+                        <p class="text-xs font-bold text-white mt-0.5">${formatPrice(item.price)}</p>
+                    </div>
+
+                    <div class="flex flex-col items-end gap-1.5">
+                        <button onclick="removeFromCart(${index})" class="text-fl-muted hover:text-fl-red text-xs">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <div class="flex items-center border border-fl-border rounded-lg bg-fl-card">
+                            <button onclick="updateQuantity(${index}, -1)" class="px-2 py-0.5 text-xs text-white hover:text-fl-blue">-</button>
+                            <span class="px-2 text-xs font-bold text-white">${item.quantity}</span>
+                            <button onclick="updateQuantity(${index}, 1)" class="px-2 py-0.5 text-xs text-white hover:text-fl-blue">+</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            subtotalElem.textContent = formatPrice(totalMoney);
+            totalElem.textContent = formatPrice(totalMoney);
+        }
+
+        function updateQuantity(index, delta) {
+            cart[index].quantity += delta;
+            if (cart[index].quantity <= 0) cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        // PEDIDO POR WHATSAPP
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) {
+                showToast("Tu carrito está vacío");
+                return;
+            }
+
+            const method = document.getElementById('shipping-method').value;
+            let msg = `🔥 *NUEVO PEDIDO - ${config.storeName}* 🔥\n\n`;
+            msg += `Hola! Quiero coordinar el pago y envío de los siguientes pares Calidad G5:\n\n`;
+
+            let total = 0;
+            cart.forEach((item, i) => {
+                const sub = item.price * item.quantity;
+                total += sub;
+                msg += `*${i + 1}. ${item.name}*\n`;
+                msg += `   • Talla: ${item.size}\n`;
+                msg += `   • Cantidad: ${item.quantity}\n`;
+                msg += `   • Subtotal: ${formatPrice(sub)}\n\n`;
+            });
+
+            msg += `-------------------------------\n`;
+            msg += `*MÉTODO DE ENTREGA:* ${method}\n`;
+            msg += `*TOTAL A PAGAR:* ${formatPrice(total)}\n\n`;
+            msg += `Quedo atento a los datos para la transferencia. ¡Gracias!`;
+
+            const url = `https://wa.me/${config.whatsapp}?text=${encodeURIComponent(msg)}`;
+            window.open(url, '_blank');
+        }
+
+        // PANEL ADMINISTRADOR
+        function openAdminModal() {
+            renderAdminProductsList();
+            document.getElementById('admin-modal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('admin-modal').classList.add('hidden');
+            resetProductForm();
+        }
+
+        function saveStoreConfig() {
+            const wa = document.getElementById('cfg-whatsapp').value.trim();
+            const name = document.getElementById('cfg-store-name').value.trim();
+
+            if (!wa) {
+                showToast("Ingresa un número de WhatsApp válido");
+                return;
+            }
+
+            config.whatsapp = wa;
+            config.storeName = name || "FLSneakers.G5";
+
+            localStorage.setItem('fl_config', JSON.stringify(config));
+            document.getElementById('hero-store-tag').textContent = config.storeName + " Official Store";
+            showToast("Configuración guardada correctamente");
+        }
+
+        // TRATAMIENTO DE IMAGEN SUBIDA
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const base64 = event.target.result;
+                document.getElementById('prod-img-base64').value = base64;
+                document.getElementById('img-preview').src = base64;
+                document.getElementById('img-preview-container').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveProduct() {
+            const editId = document.getElementById('prod-edit-id').value;
+            const name = document.getElementById('prod-name').value.trim();
+            const brand = document.getElementById('prod-brand').value;
+            const price = parseFloat(document.getElementById('prod-price').value);
+            const sizesRaw = document.getElementById('prod-sizes').value.trim();
+            const urlImg = document.getElementById('prod-img-url').value.trim();
+            const base64Img = document.getElementById('prod-img-base64').value;
+
+            if (!name || isNaN(price)) {
+                showToast("Ingresa al menos el Nombre y el Precio");
+                return;
+            }
+
+            const imgToUse = base64Img || urlImg;
+            if (!imgToUse) {
+                showToast("Debes adjuntar una foto local o ingresar una URL de imagen");
+                return;
+            }
+
+            const sizesArr = sizesRaw ? sizesRaw.split(',').map(s => s.trim()) : ["8 US", "9 US", "10 US"];
+
+            if (editId) {
+                // Editar existente
+                const index = products.findIndex(p => p.id == editId);
+                if (index > -1) {
+                    products[index] = {
+                        ...products[index],
+                        name,
+                        brand,
+                        price,
+                        sizes: sizesArr,
+                        image: imgToUse
+                    };
+                    showToast("Producto actualizado");
+                }
+            } else {
+                // Agregar nuevo
+                const newProduct = {
+                    id: Date.now(),
+                    name,
+                    brand,
+                    price,
+                    sizes: sizesArr,
+                    image: imgToUse,
+                    description: "Calidad G5 Premium disponible en FLSneakers.G5."
+                };
+                products.unshift(newProduct);
+                showToast("Producto agregado al catálogo");
+            }
+
+            localStorage.setItem('fl_products', JSON.stringify(products));
+            resetProductForm();
+            renderProducts();
+            renderAdminProductsList();
+        }
+
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            document.getElementById('prod-edit-id').value = product.id;
+            document.getElementById('prod-name').value = product.name;
+            document.getElementById('prod-brand').value = product.brand;
+            document.getElementById('prod-price').value = product.price;
+            document.getElementById('prod-sizes').value = product.sizes ? product.sizes.join(', ') : '';
+            document.getElementById('prod-img-url').value = product.image.startsWith('data:') ? '' : product.image;
+            
+            if (product.image.startsWith('data:')) {
+                document.getElementById('prod-img-base64').value = product.image;
+                document.getElementById('img-preview').src = product.image;
+                document.getElementById('img-preview-container').classList.remove('hidden');
+            }
+
+            document.getElementById('form-product-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> Editar Producto ID: ${product.id}`;
+        }
+
+        function deleteProduct(id) {
+            if (confirm("¿Estás seguro de eliminar este producto?")) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('fl_products', JSON.stringify(products));
+                renderProducts();
+                renderAdminProductsList();
+                showToast("Producto eliminado");
+            }
+        }
+
+        function resetProductForm() {
+            document.getElementById('prod-edit-id').value = '';
+            document.getElementById('prod-name').value = '';
+            document.getElementById('prod-price').value = '';
+            document.getElementById('prod-sizes').value = '';
+            document.getElementById('prod-img-url').value = '';
+            document.getElementById('prod-img-base64').value = '';
+            document.getElementById('prod-file-input').value = '';
+            document.getElementById('img-preview-container').classList.add('hidden');
+            document.getElementById('form-product-title').innerHTML = `<i class="fa-solid fa-plus-circle"></i> Agregar Nuevo Producto`;
+        }
+
+        function renderAdminProductsList() {
+            const container = document.getElementById('admin-products-list');
+            document.getElementById('admin-prod-count').textContent = products.length;
+            container.innerHTML = '';
+
+            if (products.length === 0) {
+                container.innerHTML = `<p class="text-xs text-fl-muted text-center py-4">No tienes zapatillas registradas. Agrega una arriba.</p>`;
+                return;
+            }
+
+            products.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'bg-fl-card p-3 rounded-xl border border-fl-border flex justify-between items-center text-xs';
+                item.innerHTML = `
+                    <div class="flex items-center gap-3 min-w-0 flex-1">
+                        <img src="${p.image}" class="w-10 h-10 object-cover rounded-lg border border-fl-border shrink-0">
+                        <div class="min-w-0">
+                            <p class="font-bold text-white truncate">${p.name}</p>
+                            <p class="text-fl-blue font-bold">${formatPrice(p.price)} • <span class="text-fl-muted">${p.brand}</span></p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 ml-2">
+                        <button onclick="editProduct(${p.id})" class="px-2.5 py-1.5 bg-fl-border hover:bg-fl-blue hover:text-black text-white font-bold rounded-lg transition-all">Editar</button>
+                        <button onclick="deleteProduct(${p.id})" class="px-2.5 py-1.5 bg-red-900/40 hover:bg-red-600 text-red-200 hover:text-white font-bold rounded-lg transition-all">Eliminar</button>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function clearAllProducts() {
+            if (confirm("¿Estás seguro de eliminar TODOS los productos de tu inventario?")) {
+                products = [];
+                localStorage.setItem('fl_products', JSON.stringify(products));
+                renderProducts();
+                renderAdminProductsList();
+                showToast("Inventario vaciado por completo");
+            }
+        }
+
+        // MOBILITY MENU
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        }
+
+        // UTILIDADES
+        function formatPrice(amount) {
+            return "$" + Number(amount).toLocaleString('es-CL');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').textContent = msg;
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+            }, 3000);
+        }
+
+        // INICIALIZACIÓN
+        window.onload = function() {
+            loadInitData();
+        };
+    </script>
+</body>
+</html>
